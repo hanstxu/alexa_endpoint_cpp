@@ -18,5 +18,5 @@ Skill in C++.
 Also, writing code for AWS Lambda is a subpar experience  (e.g. I have to go
 to CloudWatch to look at console.log() outputs from AWS Lambda and adding
 external libraries/modules is a hassle). I wanted to showcase how you could
-create an Alexa custom skill without using AWS Lambda and in the future,
-I'll probably reimplement this entire project using Node.js.
+create an Alexa custom skill without using AWS Lambda. In the future, I'll
+probably reimplement this entire project using Node.js.
