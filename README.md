@@ -12,11 +12,8 @@ However, AWS Lambda does not support C++.
 
 ![AWS Lambda languages](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/lambda_languages.png)
 
-So, I started this project to give people the option of writing a custom Alexa
-Skill in C++.
+I think it would be cool to write a custom Alexa Skill in C++.
 
-Also, writing code for AWS Lambda is a subpar experience  (e.g. I have to go
-to CloudWatch to look at console.log() outputs from AWS Lambda and adding
-external libraries/modules is a hassle). I wanted to showcase how you could
-create an Alexa custom skill without using AWS Lambda. In the future, I'll
-probably reimplement this entire project using Node.js.
+Also, I think that you are handicapping yourself if using AWS Lambda to write
+an Alexa Skill. You should just build a web service yourself (I might start
+another project to show how to do that with Node.js).
