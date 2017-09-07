@@ -10,8 +10,11 @@
 // close
 #include <unistd.h>
 
-int main() {
-  int status;
+// Http classes
+#include "HttpRequest.h"
+
+void setup_server() {
+    int status;
   struct addrinfo hints;
   struct addrinfo* servinfo;
   
@@ -20,7 +23,7 @@ int main() {
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags = AI_PASSIVE;
   
-  if ((status = getaddrinfo(NULL, "2000", &hints, &servinfo)) != 0) {
+  if ((status = getaddrinfo(NULL, "443", &hints, &servinfo)) != 0) {
     fprintf(stderr, "Error: ");
     exit(EXIT_FAILURE);
   }
@@ -41,11 +44,19 @@ int main() {
   char buffer[1024];
   memset(buffer, 0, 1024);
   int num_bytes = recv(new_fd, buffer, 1024, 0);
-  fprintf(stdout, "%s\n", buffer);
+  std::string req(buffer);
+  HttpRequest test = HttpRequest(req);
+  fprintf(stdout, "%s\n", test.toString().c_str());
   
   close(new_fd);
   close(sockfd);
   
   freeaddrinfo(servinfo);
+}
+
+int main() {
+  setup_server();
+  //HttpRequest test = HttpRequest("GET / HTTP/1.1\r\nstuff:key\r\nhello:world\r\n\r\nhello");
+  //fprintf(stdout, "%s\n", test.toString().c_str());
   return 0;
 }
