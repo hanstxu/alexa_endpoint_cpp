@@ -31,8 +31,8 @@ login or make a new account if you have don't have one.
 2. Follow the instructions from **Step 2** of [this tutorial](https://developer.amazon.com/alexa-skills-kit/alexa-skill-quick-start-tutorial)
 from Amazon. Note that we are bypassing **Step 1** since we are creating our
 web server to handle Alexa requests. Also, stop when your reach the last
-instruction of **Step 2**. We are going to make our own endpoint instead of
-using AWS Lambda.
+instruction of **Step 2**. We are going to use our own endpoint instead of AWS
+Lambda.
 
 3. For the **Service Endpoint Type**, select **HTTPS** and populate the
 **Default** text box with the ip address of a publicly accessible web server.
@@ -96,6 +96,105 @@ portal**, or [echosim.io](https://echosim.io/). (source: **Step 3** from the
 [previous tutorial](https://developer.amazon.com/alexa-skills-kit/alexa-skill-quick-start-tutorial)).
 
 ### Understanding the Alexa Skill Flow
+
+**tl;dr** Amazon will send a JSON object to your web server and expects
+a JSON object back. Both these objects are wrapped by HTTP with a header
+field that specifies that the **Content-Type** is **application/json**.
+
+![Alexa flow](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/alexa_flow.png)
+
+Here is an example of a JSON Request object
+
+```javascript
+{
+  "session": {
+    "new": true,
+    "sessionId": "SessionId.4a78423d-e483-44de-bb44-9656768d801b",
+    "application": {
+      "applicationId": "amzn1.ask.skill.08456690-5174-4506-8696-40dc5a046dec"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "amzn1.ask.account.AFBTHJWS2A3YSSBVSPD35HCI47QCBTBPYNDT2JUBITCO3UP3K6LLM52MY23M52SLRXPICFFH7SYI4O2TS5PBMP4DA5TMDAY3LUA2MGGRRMXWLIKO4UH7CDVMWBF6SR2HGDSCUW3OXYRYPE3UBGAXD3FYFNEA4LJGS77HJ372QDZDE7B6YVO5V3SYEI5HQRVFM6WIXVHUBCNFE3I"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.3d2072d2-27c5-4a2a-976f-6ce74b89b18b",
+    "intent": {
+      "name": "testIntent",
+      "slots": {}
+    },
+    "locale": "en-US",
+    "timestamp": "2017-09-11T21:34:50Z"
+  },
+  "context": {
+    "AudioPlayer": {
+      "playerActivity": "IDLE"
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.08456690-5174-4506-8696-40dc5a046dec"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.AFBTHJWS2A3YSSBVSPD35HCI47QCBTBPYNDT2JUBITCO3UP3K6LLM52MY23M52SLRXPICFFH7SYI4O2TS5PBMP4DA5TMDAY3LUA2MGGRRMXWLIKO4UH7CDVMWBF6SR2HGDSCUW3OXYRYPE3UBGAXD3FYFNEA4LJGS77HJ372QDZDE7B6YVO5V3SYEI5HQRVFM6WIXVHUBCNFE3I"
+      },
+      "device": {
+        "supportedInterfaces": {}
+      }
+    }
+  },
+  "version": "1.0"
+}
+```
+
+* Important parameters to note here are **applicationId**, **type**,and
+**intent.name**. These are basic variables that you can build on to decide
+on how you want to respond.
+
+Here is an example of a valid JSON Response object
+
+```javascript
+{
+  "version": "1.0",
+  "response": {
+    "shouldEndSession": true,
+    "outputSpeech": {
+      "text": "You invoked this skill with WhatsMyColorIntent",
+      "type": "PlainText"
+    }
+  }
+}
+```
+
+* Note that with this response, an Alexa device would respond with "You invoked
+this skill with WhatsMyColorIntent" and end the conversation.
+
+More detailed information about these two JSON objects can be found
+[here](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interface-reference).
+
+With regards to the starter C++ code, alexa.cpp is the place you want to look
+for writing logic to respond to different Alexa requests. It contains an
+**invokeSkill** function which is analogous to the **exports.handler** function
+that AWS Lambda provides for Node.js.
+
+```c++
+JSONObject invokeSkill(JSONObject req) {
+  std::string app_id = getApplicationId(req);
+  
+  // Populate this with your own application id
+  if (app_id != "amzn1.ask.skill.08456690-5174-4506-8696-40dc5a046dec")
+    return JSONObject();
+	  
+  std::string req_type = getRequestType(req);
+  if (req_type == "LaunchRequest")
+    return createResponse("You invoked this skill with a launch request.");
+  else if (req_type == "IntentRequest")
+    return createResponse("You invoked this skill with " + getIntentName(req) + ".");
+  
+  return createResponse("You invoked this skill with an unknown request.");
+}
+```
 
 ### Notes
 
