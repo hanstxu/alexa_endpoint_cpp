@@ -5,11 +5,11 @@ CXXFLAGS= -Wall -std=c++0x $(CXXOPTIMIZE)
 CLASSES=http/HttpRequest.h http/HttpRequest.cpp http/HttpResponse.h \
   http/HttpResponse.cpp alexa.h alexa.cpp
 LDLIBS= -lssl -lcrypto
-JSON=libjson/JSONObject.cpp libjson/JSONArray.cpp
+JSON=simple_json_cpp/JSONObject.cpp simple_json_cpp/JSONArray.cpp
 
-all: json server
+all: libjson server
 
-json: $(JSON)
+libjson: $(JSON)
 	$(CXX) -c $(CXXFLAGS) $^
 	ar -cvq libjson.a JSONArray.o JSONObject.o
 	rm -rf JSONArray.o JSONObject.o
