@@ -201,11 +201,3 @@ JSONObject invokeSkill(JSONObject req) {
   return createResponse("You invoked this skill with an unknown request.");
 }
 ```
-
-### Notes
-
-Finished the code and it works and reorganized everything
-
-TODO: write a tutorial on how to make an Alexa skill
-
-TODO: reimplement this with Node.js (should be pretty quick)
