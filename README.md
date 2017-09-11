@@ -84,8 +84,6 @@ show you what they should look like but you should really use your own.
 sudo ./server <port> <cert-file> <key-file>
 ```
 
-    Example 
-
 ```bash
 sudo ./server 443 certificates/certificate.pem certificates/private-key.pem
 ```
