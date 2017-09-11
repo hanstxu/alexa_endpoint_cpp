@@ -3,13 +3,12 @@
 
 #include <string>
 #include <map>
-#include <stdio.h>
 
 class HttpRequest {
 public:
   HttpRequest(std::string req);
   std::string toString() const;
-  std::string check();
+  std::string getBody() const;
 private:
   void parseReqLine(std::string req, int& i);
   void parseHeader(std::string req, int& i);

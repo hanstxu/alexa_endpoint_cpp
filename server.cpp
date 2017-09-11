@@ -1,4 +1,5 @@
 // general utility functions
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +19,13 @@
 
 // Http classes
 #include "HttpRequest.h"
+#include "HttpResponse.h"
+
+#include "alexa.h"
+
+using namespace std;
+
+#define BUFFER_SIZE 2048
 
 void init_openssl() {
   SSL_load_error_strings();
@@ -45,6 +53,7 @@ SSL_CTX* create_context() {
 }
 
 void configure_context(SSL_CTX* ctx) {
+  // apparently, this is deprecated?
   //SSL_CTX_set_ecdh_auto(ctx, 1);
   
   // Set the key and certificate
@@ -98,6 +107,16 @@ int create_socket(char* port) {
   return sockfd;
 }
 
+std::string createHttpResponse(JSONObject response) {
+  HttpResponse http_res = HttpResponse("HTTP/1.1", "200", "OK");
+  http_res.addHeader("Server", "CustomServer/1.0");
+  http_res.addHeader("Content-Type", "application/json");
+  http_res.addHeader("Content-Length", to_string(response.toString().size()));
+  http_res.addHeader("Connection", "Closed");
+  http_res.addBody(response.toString());
+  return http_res.toString();
+}
+
 void setup_server(char* port) {
   int sockfd;
   SSL_CTX* ctx;
@@ -122,31 +141,57 @@ void setup_server(char* port) {
   ssl = SSL_new(ctx);
   SSL_set_fd(ssl, client_fd);
   
-  char buffer[1024];
-  memset(buffer, 0, 1024);
-  
-  if (SSL_accept(ssl) < 0) {
+  if (SSL_accept(ssl) < 0)
     ERR_print_errors_fp(stderr);
-  }
-  else {
-    SSL_read(ssl, buffer, 1024);
-  }
   
-  fprintf(stdout, "%s\n", buffer);
+  char buffer[BUFFER_SIZE];
+  memset(buffer, 0, BUFFER_SIZE);
+  SSL_read(ssl, buffer, BUFFER_SIZE);
+  buffer[BUFFER_SIZE - 1] = 0;
   
-  //int num_bytes = recv(client_fd, buffer, 1024, 0);
-  //std::string req(buffer);
-  //HttpRequest test = HttpRequest(req);
-  //fprintf(stdout, "%s\n", test.toString().c_str());
+  std::string str(buffer);
+  HttpRequest http_req = HttpRequest(str);
+  JSONObject request = parseJSON<JSONObject>(http_req.getBody());
+  JSONObject response = invokeSkill(request);
+  std::string http_res = createHttpResponse(response);
+  cout << http_res << endl;
+  
+  SSL_write(ssl, http_res.c_str(), http_res.size());
 
   close(client_fd);
   close(sockfd);
   cleanup_openssl();
 }
 
+// temp
+/*
+#include <fstream>
+
+std::string fileString(std::string filename) {
+  std::ifstream t(filename);
+std::string str;
+
+t.seekg(0, std::ios::end);   
+str.reserve(t.tellg());
+t.seekg(0, std::ios::beg);
+
+str.assign((std::istreambuf_iterator<char>(t)),
+            std::istreambuf_iterator<char>());	
+  return str;
+}
+*/
+
 int main(int argc, char** argv) {
   setup_server(argv[1]);
-  //HttpRequest test = HttpRequest("GET / HTTP/1.1\r\nstuff:key\r\nhello:world\r\n\r\nhello");
-  //fprintf(stdout, "%s\n", test.toString().c_str());
+  /*std::string test = fileString("input1.txt");
+  JSONObject request = parseJSON<JSONObject>(HttpRequest(test).getBody());;
+  JSONObject response = invokeSkill(request);
+  HttpResponse http_res = HttpResponse("HTTP/1.1", "200", "OK");
+  http_res.addHeader("Server", "CustomServer/1.0");
+  http_res.addHeader("Content-Type", "application/json");
+  http_res.addHeader("Content-Length", to_string(response.toString().size()));
+  http_res.addHeader("Connection", "Closed");
+  http_res.addBody(response.toString());
+  cout << http_res.toString() << endl;*/
   return 0;
 }

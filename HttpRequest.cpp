@@ -11,9 +11,13 @@ std::string HttpRequest::toString() const {
   std::string output = method + " " + uri + " " + version + "\r\n";
   std::map<std::string,std::string>::const_iterator it;
   for (it = headers.begin(); it != headers.end(); ++it)
-    output += it->first + ":" + it->second + "\r\n";
+    output += it->first + ": " + it->second + "\r\n";
   output += "\r\n" + body;
   return output;
+}
+
+std::string HttpRequest::getBody() const {
+  return body;
 }
 
 void HttpRequest::parseReqLine(std::string req, int& i) {
@@ -36,8 +40,9 @@ void HttpRequest::parseHeader(std::string req, int& i) {
   std::string key, value;
   while (req[i] != ':')
     key += req[i++];
-  // go past the colon
-  i++;
+  // go past the colon (i++) and space (assuming there's a
+  // space between header fields; will have to check RFC)
+  i += 2;
   while (req[i] != '\r')
     value += req[i++];
   headers[key] = value;
