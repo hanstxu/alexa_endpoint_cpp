@@ -44,7 +44,8 @@ EC2 instance.
 4. Select **No** for the rest of the settings, leave the rest of the checkboxes
 blank, and select **Next** to continue the registration.
 
-5. Follow the instructions [here] to create a **self-signed certificate**.
+5. Follow the instructions [here](https://github.com/hanstxu/alexa_endpoint_cpp/tree/master/certificates)
+to create a **self-signed certificate**.
 
 6. You should now be ready to test your Alexa skill.
 
@@ -76,8 +77,9 @@ make
 ```
 
 5. If you haven't done so already, make your own **self-signed certificates**.
-Instructions are [here]. I have some example certificates in my repository to
-show you what they should look like but you should really use your own.
+Instructions are [here](https://github.com/hanstxu/alexa_endpoint_cpp/tree/master/certificates).
+I have some example certificates in my repository to show you what they should
+look like but you should really use your own.
 
 6. Run the server.
 ```bash

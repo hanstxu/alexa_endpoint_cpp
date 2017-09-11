@@ -1,6 +1,6 @@
 ## Creating a Self-Signed Certificate
 
-You can also reference [instructions by amazon on creating a self-signed
+You can also reference [instructions by Amazon on creating a self-signed
 certificate](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/testing-an-alexa-skill#create-a-private-key-and-self-signed-certificate-for-testing),
 which is what this README is based on.
 
@@ -38,7 +38,7 @@ DNS.1 = TODO Provide your fully qualified domain name
 
 * For some reason, I had to make sure that CN and DNS.1 matched in order for
 the certificate to work. If you're certificate doesn't work, maybe make the CN
-and DNS.1 fields the fields regardless of the name of your skill.
+and DNS.1 fields the same regardless of the name of your skill.
 
 4. Create a certificate.
 ```bash
@@ -49,6 +49,6 @@ openssl req -new -x509 -days 365 \
 ```
 
 5. Open the certificate and copy it into the Configuration Portal of your Alexa
-skill.
+skill and click **Save**.
 
 ![ssl certificate](https://github.com/hanstxu/alexa_endpoint_cpp/blob/master/screenshots/ssl_certificate.png)
