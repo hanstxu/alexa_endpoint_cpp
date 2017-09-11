@@ -18,8 +18,8 @@
 #include <unistd.h>
 
 // Http classes
-#include "HttpRequest.h"
-#include "HttpResponse.h"
+#include "http/HttpRequest.h"
+#include "http/HttpResponse.h"
 
 #include "alexa.h"
 
@@ -57,13 +57,13 @@ void configure_context(SSL_CTX* ctx) {
   //SSL_CTX_set_ecdh_auto(ctx, 1);
   
   // Set the key and certificate
-  if (SSL_CTX_use_certificate_file(ctx, "certificate.pem", SSL_FILETYPE_PEM)
+  if (SSL_CTX_use_certificate_file(ctx, "certificates/certificate.pem", SSL_FILETYPE_PEM)
     <= 0) {
     ERR_print_errors_fp(stderr);
     exit(EXIT_FAILURE);
   }
   
-  if (SSL_CTX_use_PrivateKey_file(ctx, "private-key.pem", SSL_FILETYPE_PEM)
+  if (SSL_CTX_use_PrivateKey_file(ctx, "certificates/private-key.pem", SSL_FILETYPE_PEM)
     <= 0) {
     ERR_print_errors_fp(stderr);
     exit(EXIT_FAILURE);
@@ -163,35 +163,7 @@ void setup_server(char* port) {
   cleanup_openssl();
 }
 
-// temp
-/*
-#include <fstream>
-
-std::string fileString(std::string filename) {
-  std::ifstream t(filename);
-std::string str;
-
-t.seekg(0, std::ios::end);   
-str.reserve(t.tellg());
-t.seekg(0, std::ios::beg);
-
-str.assign((std::istreambuf_iterator<char>(t)),
-            std::istreambuf_iterator<char>());	
-  return str;
-}
-*/
-
 int main(int argc, char** argv) {
   setup_server(argv[1]);
-  /*std::string test = fileString("input1.txt");
-  JSONObject request = parseJSON<JSONObject>(HttpRequest(test).getBody());;
-  JSONObject response = invokeSkill(request);
-  HttpResponse http_res = HttpResponse("HTTP/1.1", "200", "OK");
-  http_res.addHeader("Server", "CustomServer/1.0");
-  http_res.addHeader("Content-Type", "application/json");
-  http_res.addHeader("Content-Length", to_string(response.toString().size()));
-  http_res.addHeader("Connection", "Closed");
-  http_res.addBody(response.toString());
-  cout << http_res.toString() << endl;*/
   return 0;
 }

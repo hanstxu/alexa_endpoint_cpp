@@ -21,3 +21,9 @@ another project to show how to do that with Node.js).
 ### Note
 
 apt-get install libssl-dev to use openssl libraries
+
+Finished the code and it works and reorganized everything
+
+TODO: write a tutorial on how to make an Alexa skill
+
+TODO: reimplement this with Node.js (should be pretty quick)

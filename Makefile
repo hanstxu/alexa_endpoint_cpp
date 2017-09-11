@@ -2,16 +2,16 @@ CXX=g++
 CXXOPTIMIZE= -O2
 CXXDEBUG= -g
 CXXFLAGS= -Wall -std=c++0x $(CXXOPTIMIZE)
-CLASSES=HttpRequest.h HttpRequest.cpp alexa.h alexa.cpp HttpResponse.h \
-  HttpResponse.cpp
+CLASSES=http/HttpRequest.h http/HttpRequest.cpp http/HttpResponse.h \
+  http/HttpResponse.cpp alexa.h alexa.cpp
 LDLIBS= -lssl -lcrypto
-JSON=JSONObject.cpp JSONArray.cpp
+JSON=libjson/JSONObject.cpp libjson/JSONArray.cpp
 
-all: libjson server
+all: json server
 
-libjson: $(JSON)
+json: $(JSON)
 	$(CXX) -c $(CXXFLAGS) $^
-	ar -cvq $@.a JSONArray.o JSONObject.o
+	ar -cvq libjson.a JSONArray.o JSONObject.o
 	rm -rf JSONArray.o JSONObject.o
 
 server: $(CLASSES)

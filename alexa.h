@@ -2,8 +2,8 @@
 #define ALEXA_H
 
 // a simple json library
-#include "JSONObject.h"
-#include "JSONArray.h"
+#include "libjson/JSONObject.h"
+#include "libjson/JSONArray.h"
 
 std::string getApplicationId(JSONObject req);
 
