@@ -39,7 +39,7 @@ using AWS Lambda.
 In my example screenshot below, I'm using a temporary IP address of an AWS
 EC2 instance.
 
-![Endpoint configuration](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/endpoint_conf.PNG)
+![Endpoint configuration](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/endpoint_conf.png)
 
 4. Select **No** for the rest of the settings, leave the rest of the checkboxes
 blank, and select **Next** to continue the registration.
