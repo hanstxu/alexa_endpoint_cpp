@@ -74,34 +74,45 @@ void setup_server(const char* port, const char* cert_file,
   unsigned int addr_size = sizeof addr;
   SSL* ssl;
   
-  int client_fd = accept(sockfd, (struct sockaddr *)&addr, &addr_size);
-  if (client_fd < 0) {
-    fprintf(stderr, "Error: Unable to accept client connection\n");
-    exit(EXIT_FAILURE);
-  }
+  while (1) {
+    int client_fd = accept(sockfd, (struct sockaddr *)&addr, &addr_size);
+    if (client_fd < 0) {
+      fprintf(stderr, "Error: Unable to accept client connection\n");
+      exit(EXIT_FAILURE);
+    }
+    
+    ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, client_fd);
+    
+    if (SSL_accept(ssl) < 0) {
+      ERR_print_errors_fp(stderr);
+      exit(EXIT_FAILURE);
+    }
+    
+    char buffer[BUFFER_SIZE];
+    memset(buffer, 0, BUFFER_SIZE);
+    SSL_read(ssl, buffer, BUFFER_SIZE);
+    buffer[BUFFER_SIZE - 1] = 0;
+    
+    std::string str(buffer);
+    HttpRequest http_req = HttpRequest(str);
+    JSONObject request = parseJSON<JSONObject>(http_req.getBody());
+    
+    JSONObject response = invokeSkill(request);
+    // makes sure that other Alexa developers are not allowed to use this web
+    // service
+    if (response.toString() == "{}") {
+      close(client_fd);
+      break;
+    }
   
-  ssl = SSL_new(ctx);
-  SSL_set_fd(ssl, client_fd);
+    std::string http_res = createHttpResponse(response);
   
-  if (SSL_accept(ssl) < 0) {
-    ERR_print_errors_fp(stderr);
-    exit(EXIT_FAILURE);
-  }
-  
-  char buffer[BUFFER_SIZE];
-  memset(buffer, 0, BUFFER_SIZE);
-  SSL_read(ssl, buffer, BUFFER_SIZE);
-  buffer[BUFFER_SIZE - 1] = 0;
-  
-  std::string str(buffer);
-  HttpRequest http_req = HttpRequest(str);
-  JSONObject request = parseJSON<JSONObject>(http_req.getBody());
-  JSONObject response = invokeSkill(request);
-  std::string http_res = createHttpResponse(response);
-  
-  SSL_write(ssl, http_res.c_str(), http_res.size());
+    SSL_write(ssl, http_res.c_str(), http_res.size());
 
-  close(client_fd);
+    close(client_fd);
+  }
+  
   close(sockfd);
   cleanup_openssl();
 }

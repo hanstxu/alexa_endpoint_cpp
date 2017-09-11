@@ -37,9 +37,11 @@ JSONObject createResponse (std::string text) {
 
 JSONObject invokeSkill(JSONObject req) {
   std::string app_id = getApplicationId(req);
-  // TODO: make sure that your web service only responds to your skill
-  //if (app_id != "")
   
+  // Populate this with your own application id
+  if (app_id != "amzn1.ask.skill.08456690-5174-4506-8696-40dc5a046dec")
+    return JSONObject();
+	  
   std::string req_type = getRequestType(req);
   if (req_type == "LaunchRequest")
     return createResponse("You invoked this skill with a launch request.");
