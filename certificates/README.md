@@ -40,6 +40,9 @@ DNS.1 = TODO Provide your fully qualified domain name
 the certificate to work. If you're certificate doesn't work, maybe make the CN
 and DNS.1 fields the same regardless of the name of your skill.
 
+* Also, apparently other people had this
+[issue](https://github.com/sushilks/alexaHarmonyApp/issues/7) too.
+
 4. Create a certificate.
 ```bash
 openssl req -new -x509 -days 365 \
