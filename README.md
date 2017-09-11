@@ -176,7 +176,11 @@ More detailed information about these two JSON objects can be found
 With regards to the starter C++ code, alexa.cpp is the place you want to look
 for writing logic to respond to different Alexa requests. It contains an
 **invokeSkill** function which is analogous to the **exports.handler** function
-that AWS Lambda provides for Node.js.
+that AWS Lambda provides for Node.js. It also makes use of the
+[simple_json_cpp](https://github.com/hanstxu/simple_json_cpp) library to handle
+the json, but you're welcome to use other json libraries and rewrite
+alexa.h/alexa.cpp. Fundamentally, all you're doing when creating an Alexa skill
+is reading a JSON object and writing a JSON object to send back.
 
 ```c++
 JSONObject invokeSkill(JSONObject req) {
