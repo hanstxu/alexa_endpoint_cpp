@@ -39,7 +39,7 @@ using AWS Lambda.
 In my example screenshot below, I'm using a temporary IP address of an AWS
 EC2 instance.
 
-![Endpoint configuration](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/endpoint_conf.png)
+![Endpoint configuration](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/endpoint_conf.PNG)
 
 4. Select **No** for the rest of the settings, leave the rest of the checkboxes
 blank, and select **Next** to continue the registration.
@@ -84,9 +84,9 @@ show you what they should look like but you should really use your own.
 sudo ./server <port> <cert-file> <key-file>
 ```
 
-...Example 
+   Example 
 
-...```bash
+```bash
 sudo ./server 443 certificates/certificate.pem certificates/private-key.pem
 ```
 
