@@ -20,28 +20,29 @@
 
 void check_args(int argc, char** argv) {
   if (argc != 4) {
-    perror("Error: expected 4 arguments\n");
+    fprintf(stderr, "Error: expected 4 arguments\n");
     exit(EXIT_FAILURE);
   }
   
   int i = 0;
   while (argv[1][i] != '\0') {
-    if (!isdigit(argv[1][i])) {
-      perror("Error: port contains characters that are not digits\n");
+    if (!isdigit(argv[1][i++])) {
+      fprintf(stderr, "Error: port argument contains characters that are not");
+	  fprintf(stderr, " digits\n");
       exit(EXIT_FAILURE);
     }
   }
   
   std::ifstream infile(argv[2]);
   if (!infile.is_open()) {
-    perror("Error: certificate file does not exist");
+    fprintf(stderr, "Error: certificate file does not exist\n");
     exit(EXIT_FAILURE);
   }
   infile.close();
   
   infile.open(argv[3]);
   if (!infile.is_open()) {
-    perror("Error: private key file does not exist");
+    fprintf(stderr, "Error: private key file does not exist\n");
     exit(EXIT_FAILURE);
   }
   infile.close();
@@ -75,7 +76,7 @@ void setup_server(const char* port, const char* cert_file,
   
   int client_fd = accept(sockfd, (struct sockaddr *)&addr, &addr_size);
   if (client_fd < 0) {
-    perror("Error: Unable to accept client connection\n");
+    fprintf(stderr, "Error: Unable to accept client connection\n");
     exit(EXIT_FAILURE);
   }
   

@@ -12,7 +12,7 @@ int create_socket(const char* port) {
   hints.ai_flags = AI_PASSIVE; // Fill in ip address automatically
   
   if (getaddrinfo(NULL, port, &hints, &server_info) < 0) {
-    perror("Error: Unable to getaddrinfo\n");
+    fprintf(stderr, "Error: Unable to getaddrinfo\n");
     exit(EXIT_FAILURE);
   }
   
@@ -20,17 +20,17 @@ int create_socket(const char* port) {
   sockfd = socket(server_info->ai_family, server_info->ai_socktype,
     server_info->ai_protocol);
   if (sockfd < 0) {
-    perror("Error: Unable to create socket\n");
+    fprintf(stderr, "Error: Unable to create socket\n");
     exit(EXIT_FAILURE);
   }
   
   if (bind(sockfd, server_info->ai_addr, server_info->ai_addrlen) < 0) {
-    perror("Error: Unable to bind to port\n");
+    fprintf(stderr, "Error: Unable to bind to port\n");
     exit(EXIT_FAILURE);
   }
   
   if (listen(sockfd, 1) < 0) {
-    perror("Error: Unable to listen to port\n");
+    fprintf(stderr, "Error: Unable to listen to port\n");
     exit(EXIT_FAILURE);
   }
   
