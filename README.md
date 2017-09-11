@@ -30,7 +30,7 @@ login or make a new account if you have don't have one.
 
 2. Follow the instructions from **Step 2** of [this tutorial](https://developer.amazon.com/alexa-skills-kit/alexa-skill-quick-start-tutorial)
 from Amazon. Note that we are bypassing **Step 1** since we are creating our
-web server to handle Alexa requests. Also, stop when your reach last
+web server to handle Alexa requests. Also, stop when your reach the last
 instruction of **Step 2**. We are going to make our own endpoint instead of
 using AWS Lambda.
 
@@ -84,7 +84,8 @@ show you what they should look like but you should really use your own.
 sudo ./server <port> <cert-file> <key-file>
 ```
 
-   Example 
+    
+	Example 
 
 ```bash
 sudo ./server 443 certificates/certificate.pem certificates/private-key.pem
