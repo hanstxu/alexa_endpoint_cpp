@@ -72,7 +72,8 @@ git clone https://github.com/hanstxu/alexa_endpoint_cpp.git
 ```
 
 4. Build the project.
-```
+```bash
+cd alexa_endpoint_cpp
 make
 ```
 
