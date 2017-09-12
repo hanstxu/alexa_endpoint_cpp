@@ -6,15 +6,12 @@ std::string getApplicationId(JSONObject req) {
 }
 
 std::string getRequestType(JSONObject req) {
-  return req.get<JSONObject>("session").get<JSONObject>("application").
-    get<JSONObject>("user").get<JSONObject>("request").
-    get<std::string>("type");
+  return req.get<JSONObject>("request").get<std::string>("type");
 }
 
 std::string getIntentName(JSONObject req) {
-  return req.get<JSONObject>("session").get<JSONObject>("application").
-    get<JSONObject>("user").get<JSONObject>("request").
-    get<JSONObject>("intent").get<std::string>("name");
+  return req.get<JSONObject>("request").get<JSONObject>("intent").
+    get<std::string>("name");
 }
 
 JSONObject createPlainText(std::string text) {

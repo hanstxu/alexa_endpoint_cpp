@@ -223,12 +223,18 @@ JSONObject parseJSON_objectHelper (unsigned int& i, std::string str) {
       continue;
     else if (str[i] == '\"') {
       std::string key = getKeyAndUpdateIndex(i, str);
-      if (str[i] == '\"')
+      if (str[i] == '\"') {
         object.add<std::string>(key, getValueAndUpdateIndex<std::string>(i, str));
-      else if (str[i] == 'n')
+        i--; // make sure to not skip '}'so that JSONObjects are closed
+      }
+      else if (str[i] == 'n') {
         object.add<std::string>(key, getValueAndUpdateIndex<std::string>(i, str));
-      else if (str[i] == 't' || str[i] == 'f')
+        i--; // make sure to not skip '}'so that JSONObjects are closed
+      }
+      else if (str[i] == 't' || str[i] == 'f') {
         object.add<bool>(key, getValueAndUpdateIndex<bool>(i, str));
+        i--; // make sure to not skip '}'so that JSONObjects are closed
+      }
       else if (str[i] == '-' || isdigit(str[i])) {
         if (containsDecimal(i, str))
           object.add<double>(key, getValueAndUpdateIndex<double>(i, str));
