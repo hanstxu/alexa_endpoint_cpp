@@ -223,18 +223,13 @@ JSONObject parseJSON_objectHelper (unsigned int& i, std::string str) {
       continue;
     else if (str[i] == '\"') {
       std::string key = getKeyAndUpdateIndex(i, str);
-      if (str[i] == '\"') {
+      char c = str[i];
+      if (str[i] == '\"')
         object.add<std::string>(key, getValueAndUpdateIndex<std::string>(i, str));
-        i--; // make sure to not skip '}'so that JSONObjects are closed
-      }
-      else if (str[i] == 'n') {
+      else if (str[i] == 'n')
         object.add<std::string>(key, getValueAndUpdateIndex<std::string>(i, str));
-        i--; // make sure to not skip '}'so that JSONObjects are closed
-      }
-      else if (str[i] == 't' || str[i] == 'f') {
+      else if (str[i] == 't' || str[i] == 'f')
         object.add<bool>(key, getValueAndUpdateIndex<bool>(i, str));
-        i--; // make sure to not skip '}'so that JSONObjects are closed
-      }
       else if (str[i] == '-' || isdigit(str[i])) {
         if (containsDecimal(i, str))
           object.add<double>(key, getValueAndUpdateIndex<double>(i, str));
@@ -249,6 +244,11 @@ JSONObject parseJSON_objectHelper (unsigned int& i, std::string str) {
         object.add<JSONArray>(key, parseJSON_arrayHelper(++i, str));
       else if (str[i] == '}')
         return object;
+      
+      // make sure to not skip '}'so that JSONObjects are closed
+      if (c == '\"' || c == 'n' || c == 't' || c == 'f' || c == '-' ||
+        isdigit(c) || c == '.')
+        i--;
     }
     else if (str[i] == '}')
       return object;
