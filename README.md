@@ -92,10 +92,15 @@ sudo ./server 443 certificates/certificate.pem certificates/private-key.pem
 
 ### Test your Alexa Skill
 
-1. While the server is running, you can test your skill using your own Alexa
+While the server is running, you can test your skill using your own Alexa
 device, the **Service Simulator** of your Alexa skill in the **Amazon developer
 portal**, or [echosim.io](https://echosim.io/). (source: **Step 3** from the
 [previous tutorial](https://developer.amazon.com/alexa-skills-kit/alexa-skill-quick-start-tutorial)).
+
+Below is an example screenshot of what to expect when using the **Service
+Simulator**.
+
+![test result](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/test_result.png)
 
 ### Understanding the Alexa Skill Flow
 
