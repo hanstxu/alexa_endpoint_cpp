@@ -195,7 +195,7 @@ JSONObject invokeSkill(JSONObject req) {
   std::string app_id = getApplicationId(req);
   
   // Populate this with your own application id
-  if (app_id != "amzn1.ask.skill.08456690-5174-4506-8696-40dc5a046dec")
+  if (app_id != "TODO: fill in with your Skill application id")
     return JSONObject();
 	  
   std::string req_type = getRequestType(req);
@@ -207,3 +207,8 @@ JSONObject invokeSkill(JSONObject req) {
   return createResponse("You invoked this skill with an unknown request.");
 }
 ```
+
+*Your skill* **_Application Id_** *found on the Amazon developer portal as
+shown in the screenshot below.*
+
+![Application Id](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/application_id.png)
