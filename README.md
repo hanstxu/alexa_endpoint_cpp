@@ -181,6 +181,8 @@ this skill with WhatsMyColorIntent" and end the conversation.
 More detailed information about these two JSON objects can be found
 [here](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interface-reference).
 
+### Code
+
 With regards to the starter C++ code, alexa.cpp is the place you want to look
 for writing logic to respond to different Alexa requests. It contains an
 **invokeSkill** function which is analogous to the **exports.handler** function
