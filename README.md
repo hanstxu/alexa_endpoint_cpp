@@ -79,7 +79,7 @@ make
 
 5. If you haven't done so already, make your own **self-signed certificates**.
 Instructions are [here](https://github.com/hanstxu/alexa_endpoint_cpp/tree/master/certificates).
-I have some example certificates in my repository to show you what they should
+I have an example certificate in my repository to show you what one should
 look like but you should really use your own.
 
 6. Run the server.
@@ -208,7 +208,7 @@ JSONObject invokeSkill(JSONObject req) {
 }
 ```
 
-*Your skill* **_Application Id_** *found on the Amazon developer portal as
-shown in the screenshot below.*
+*Your skill* **_Application Id_** * can be found on the Amazon developer portal
+as shown in the screenshot below.*
 
 ![Application Id](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/application_id.png)
