@@ -210,7 +210,7 @@ JSONObject invokeSkill(JSONObject req) {
 }
 ```
 
-*Your skill* **_Application Id_** * can be found on the Amazon developer portal
+*Your skill* **_Application Id_** *can be found on the Amazon developer portal
 as shown in the screenshot below.*
 
 ![Application Id](https://raw.githubusercontent.com/hanstxu/alexa_endpoint_cpp/master/screenshots/application_id.png)
