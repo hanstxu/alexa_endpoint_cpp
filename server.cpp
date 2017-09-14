@@ -48,7 +48,7 @@ void check_args(int argc, char** argv) {
   infile.close();
 }
 
-std::string createHttpResponse(JSONObject response) {
+std::string createHttpSuccessResponse(JSONObject response) {
   HttpResponse http_res = HttpResponse("HTTP/1.1", "200", "OK");
   http_res.addHeader("Server", "CustomServer/1.0");
   http_res.addHeader("Content-Type", "application/json");
@@ -56,6 +56,11 @@ std::string createHttpResponse(JSONObject response) {
   http_res.addHeader("Connection", "Closed");
   http_res.addBody(response.toString());
   return http_res.toString();
+}
+
+std::string createHttpUnauthorizedResponse(JSONObject response) {
+  HttpResponse http_req = HttpResponse("HTTP/1.1", "401", "Unauthorized");
+  return http_res.to_string();
 }
 
 void setup_server(const char* port, const char* cert_file,
@@ -97,16 +102,15 @@ void setup_server(const char* port, const char* cert_file,
     std::string str(buffer);
     HttpRequest http_req = HttpRequest(str);
     JSONObject request = parseJSON<JSONObject>(http_req.getBody());
-    
     JSONObject response = invokeSkill(request);
-    // makes sure that other Alexa developers are not allowed to use this web
+    std::string http_res;
+	
+	// makes sure that other Alexa developers are not allowed to use this web
     // service
-    if (response.toString() == "{}") {
-      close(client_fd);
-      break;
-    }
-  
-    std::string http_res = createHttpResponse(response);
+    if (response.toString() == "{}")
+      http_res = createHttpUnauthorizedResponse(response);
+    else
+      http_res = createHttpSuccessResponse(response);
   
     SSL_write(ssl, http_res.c_str(), http_res.size());
 
