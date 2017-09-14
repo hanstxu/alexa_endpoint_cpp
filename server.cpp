@@ -59,8 +59,8 @@ std::string createHttpSuccessResponse(JSONObject response) {
 }
 
 std::string createHttpUnauthorizedResponse(JSONObject response) {
-  HttpResponse http_req = HttpResponse("HTTP/1.1", "401", "Unauthorized");
-  return http_res.to_string();
+  HttpResponse http_res = HttpResponse("HTTP/1.1", "401", "Unauthorized");
+  return http_res.toString();
 }
 
 void setup_server(const char* port, const char* cert_file,
